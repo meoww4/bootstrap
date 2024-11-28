@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск по объявлениям - GET PET BACK</title>
+    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .pet-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 350px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            background-color: #fff;
+        }
+        .pet-card img {
+            display: block;
+            margin: 0 auto;
+            max-height: 250px;
+            object-fit: cover;
+        }
+        .pet-card .card-body {
+            flex-grow: 1;
+        }
+
+        .card-deck {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .card-deck .col-md-6 {
+            flex: 1 1 calc(50% - 20px); /* 2 карточки в ряд */
+        }
+
+        .search-container {
+            margin-top: 30px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .search-container input {
+            width: 50%;
+            margin-right: 10px;
+        }
+
+        .search-container button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .search-box {
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .search-box input, .search-box button {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .search-box button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .search-box button:hover {
+            background-color: #0056b3;
+        }
+
+        .pagination {
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="index.html"><img src="image/logo.jpg" class="w-25 rounded-3" alt="logo"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="index.html">Главная</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="profile.html">Личный кабинет</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="registration.html">Регистрация</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="login.html">Вход</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="add_pet.html">Добавить объявление</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="search.html">Поиск по объявлениям</a>
+                </li>
+              </ul>
+              <form class="d-flex">
+                <input class="form-control me-2" type="search" list="pets" placeholder="Поиск" aria-label="Search">
+                <button class="btn btn-primary" type="button">Поиск</button>
+                <datalist id="pets">
+                  <option value="Кошка"></option>
+                  <option value="Собака"></option>
+                  <option value="Корова"></option>
+                  <option value="Крокодил"></option>
+                  <option value="Сова"></option>
+                </datalist>
+              </form>
+            </div>
+          </div>
+        </nav>
+    </header>
+
+  <main style="min-height: 70vh;">
+    <h2 class="text-center text-white bg-primary m-2">Поиск по объявлениям</h2>
+    <div class="search-box">
+      <h3>Поиск</h3>
+      <input type="text" id="regionInput" placeholder="Район">
+      <input type="text" id="animalTypeInput" placeholder="Вид животного">
+      <button onclick="searchAds()">Найти</button>
+    </div>
+
+    <div class="container">
+        <div id="adsContainer" class="card-deck">
+        </div>
+    </div>
+
+    <nav aria-label="Page navigation example">
+      <ul class="pagination" id="pagination">
+      </ul>
+    </nav>
+
+  </main>
+
+  <footer class="py-3 bg-primary">
+    <div class="container text-center">
+      <p class="text-white p-3">GET PET BACK © Copyright, 2022</p>
+      <p class="text-white p-3">Все права защищены</p>
+    </div>
+  </footer>
+
+  <script>
+    const ads = [
+        { id: 77, type: "Собака", description: "Собака рыжая, была утеряна в Красногвардейском районе", chipNumber: "ca-001-spb", region: "Красногвардейский", date: "12-10-2024", image: "image/pets/собака.jpg" },
+        { id: 14, type: "Кошка", description: "Потерялась кошка, пушистая, серая. Любит играть, ласковая.", chipNumber: "ca-001-spb", region: "Василеостровский", date: "24-03-2020", image: "image/pets/кошка.jpg" },
+        { id: 88, type: "Попугай", description: "Попугай, зеленый, потерян в центральной части города.", chipNumber: "po-004-spb", region: "Центральный", date: "28-10-2024", image: "image/pets/попугай.jfif" },
+        { id: 99, type: "Свинья", description: "Молодая свинья, была найдена на окраине города, в районе деревни.", chipNumber: "sv-101-spb", region: "Калининский", date: "10-11-2024", image: "image/pets/свинья.jpg" },
+        { id: 22, type: "Кролик", description: "Белый кролик, потерян в районе Академического. Любит морковь.", chipNumber: "kr-202-spb", region: "Калининский", date: "22-10-2024", image: "image/pets/кролик.jpg" },
+        { id: 18, type: "Коза", description: "Потерялась коза, последний раз видели в здании Московского вокзала г. Санкт-Петербург. Коза белая, пуховая.", chipNumber: "go-011-spb", region: "Центральный", date: "14-03-2022", image: "image/pets/коза.jpeg" },
+        { id: 17, type: "Собака", description: "Потерялась собака породы корги, очень любит бегать.", chipNumber: "ca-105-spb", region: "Красногвардейский", date: "15-06-2024", image: "image/pets/горилла.jpg" },
+        { id: 58, type: "Мышь", description: "Мышь серая, была утеряна в центральном районе.", chipNumber: "mo-244-spb", region: "Центральный", date: "15-06-2024", image: "image/pets/мышь.jpg" },
+        { id: 10, type: "Котенок", description: "Маленький серый котенок, потерян в лесу.", chipNumber: "ca-551-spb", region: "Приморский", date: "15-06-2024", image: "image/pets/котик.jpg" },
+        { id: 25, type: "Кошка", description: "Кошка черная с белыми пятнами, потерялась на выходных.", chipNumber: "ca-089-spb", region: "Выборгский", date: "22-10-2023", image: "image/pets/кошка2.jpg" },
+    ];
+
+    let currentPage = 1;
+    const itemsPerPage = 4;
+
+    function displayAds(filteredAds) {
+        const adsContainer = document.getElementById('adsContainer');
+        adsContainer.innerHTML = '';
+
+        if (filteredAds.length === 0) {
+            adsContainer.innerHTML = '<p>Объявлений не найдено.</p>';
+            return;
+        }
+
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const adsToDisplay = filteredAds.slice(startIndex, endIndex);
+
+        adsToDisplay.forEach(ad => {
+            const adElement = document.createElement('div');
+            adElement.className = 'col-md-6 mb-4 pet-card';
+            adElement.innerHTML = `
+                <div class="card-body">
+                    <img src="${ad.image}" class="w-75" alt="${ad.type}">
+                    <p class="text-primary mt-3">id: ${ad.id}</p>
+                    <p><strong>Вид животного:</strong> ${ad.type}</p>
+                    <p><strong>Описание:</strong> ${ad.description}</p>
+                    <p><strong>Номер чипа:</strong> ${ad.chipNumber}</p>
+                    <p><strong>Район:</strong> ${ad.region}</p>
+                    <p><strong>Дата:</strong> ${ad.date}</p>
+                </div>
+            `;
+            adsContainer.appendChild(adElement);
+        });
+
+        updatePagination(filteredAds.length);
+    }
+
+    function updatePagination(totalAds) {
+        const pagination = document.getElementById('pagination');
+        pagination.innerHTML = '';
+
+        const totalPages = Math.ceil(totalAds / itemsPerPage);
+
+        const prevButton = document.createElement('li');
+        prevButton.className = 'page-item';
+        prevButton.innerHTML = `<a class="page-link" href="#" onclick="changePage(currentPage - 1)">Предыдущая</a>`;
+        pagination.appendChild(prevButton);
+
+        for (let i = 1; i <= totalPages; i++) {
+            const pageButton = document.createElement('li');
+            pageButton.className = 'page-item';
+            pageButton.innerHTML = `<a class="page-link" href="#" onclick="changePage(${i})">${i}</a>`;
+            pagination.appendChild(pageButton);
+        }
+
+        const nextButton = document.createElement('li');
+        nextButton.className = 'page-item';
+        nextButton.innerHTML = `<a class="page-link" href="#" onclick="changePage(currentPage + 1)">Следующая</a>`;
+        pagination.appendChild(nextButton);
+    }
+
+    function changePage(pageNumber) {
+        const filteredAds = getFilteredAds();
+        const totalPages = Math.ceil(filteredAds.length / itemsPerPage);
+        if (pageNumber < 1) pageNumber = 1;
+        if (pageNumber > totalPages) pageNumber = totalPages;
+        currentPage = pageNumber;
+        displayAds(filteredAds);
+    }
+
+    function getFilteredAds() {
+        const region = document.getElementById('regionInput').value.trim().toLowerCase();
+        const animalType = document.getElementById('animalTypeInput').value.trim().toLowerCase();
+        return ads.filter(ad => {
+            const matchesRegion = region ? ad.region.toLowerCase().includes(region) : true;
+            const matchesType = animalType ? ad.type.toLowerCase().includes(animalType) : true;
+            return matchesRegion && matchesType;
+        });
+    }
+
+    displayAds(ads);
+
+    function searchAds() {
+        const filteredAds = getFilteredAds();
+        currentPage = 1;
+        displayAds(filteredAds);
+    }
+  </script>
+
+<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

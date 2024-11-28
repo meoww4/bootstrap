@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить объявление</title>
+    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            background-color: #ffffff;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex-grow: 1;
+        }
+
+        footer {
+            margin-top: auto;
+        }
+
+        .content-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+        }
+
+        .btn-custom {
+            width: auto;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="index.html"><img src="image/logo.jpg" class="w-25 rounded-3" alt="logo"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="index.html">Главная</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="profile.html">Личный кабинет</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="registration.html">Регистрация</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="login.html">Вход</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="add_pet.html">Добавить объявление</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="search.html">Поиск по объявлениям</a>
+                </li>
+              </ul>
+              <form class="d-flex">
+                <input class="form-control me-2" type="search" list="pets" placeholder="Поиск" aria-label="Search">
+                <button class="btn btn-primary">Поиск</button>
+                <datalist id="pets">
+                  <option value="Кошка"></option>
+                  <option value="Собака"></option>
+                  <option value="Корова"></option>
+                  <option value="Крокодил"></option>
+                  <option value="Сова"></option>
+                </datalist>
+              </form>
+            </div>
+          </div>
+        </nav>
+    </header>
+
+    <main class="container my-5">
+        <div class="content-container">
+            <div class="header-container">
+                <h2>Добавить объявление</h2>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registrationModal">Зарегистрироваться</button>
+            </div>
+            <form id="petForm" class="needs-validation" novalidate>
+                <div class="mb-3">
+                    <label for="petName" class="form-label">Имя животного</label>
+                    <input type="text" class="form-control" id="petName" placeholder="Например, Барсик" required>
+                    <div class="invalid-feedback">
+                        Пожалуйста, введите имя животного.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="chipNumber" class="form-label">Номер чипа</label>
+                    <input type="text" class="form-control" id="chipNumber" placeholder="например, 6 ha-221-spb" pattern="^[a-zA-Z0-9\-]+$" required>
+                    <div class="invalid-feedback">
+                        Номер чипа должен содержать только буквы, цифры и дефисы.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="region" class="form-label">Район</label>
+                    <input type="text" class="form-control" id="region" placeholder="Центральный" required>
+                    <div class="invalid-feedback">
+                        Пожалуйста, укажите район.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="date" class="form-label">Дата</label>
+                    <input type="date" class="form-control" id="date" required>
+                    <div class="invalid-feedback">
+                        Пожалуйста, укажите дату.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="animalType" class="form-label">Вид животного</label>
+                    <input type="text" class="form-control" id="animalType" placeholder="Собака, кошка и т.д." required>
+                    <div class="invalid-feedback">
+                        Пожалуйста, укажите вид животного.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" class="form-label">Фото животного</label>
+                    <input type="file" class="form-control" id="image" accept="image/*" required>
+                    <div class="invalid-feedback">
+                        Пожалуйста, загрузите фото животного.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Описание</label>
+                    <textarea class="form-control" id="description" rows="4" required></textarea>
+                    <div class="invalid-feedback">
+                        Пожалуйста, предоставьте описание.
+                    </div>
+                </div>
+
+                <div class="col-12 mt-4">
+                    <button class="btn btn-primary" type="submit">Опубликовать</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registrationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registrationModalLabel">Регистрация</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="registrationForm" class="row g-3 needs-validation" novalidate>
+                        <div class="col-md-4">
+                            <label for="firstName" class="form-label">Имя</label>
+                            <input type="text" class="form-control" id="firstName" placeholder="Иван" pattern="^[А-Яа-яЁё]{2,20}$" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="lastName" class="form-label">Фамилия</label>
+                            <input type="text" class="form-control" id="lastName" placeholder="Петров" pattern="^[А-Яа-яЁё]{2,20}$" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="middleName" class="form-label">Отчество</label>
+                            <input type="text" class="form-control" id="middleName" placeholder="Иванович" pattern="^[А-Яа-яЁё]{2,30}$" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="birthDate" class="form-label">Дата рождения</label>
+                            <input type="date" class="form-control" id="birthDate" max="2009-12-31" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="city" class="form-label">Город</label>
+                            <input type="text" class="form-control" id="city" placeholder="Москва" pattern="^[А-Яа-яЁё]{2,}$" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="phoneNumber" class="form-label">Номер телефона</label>
+                            <input type="tel" class="form-control" id="phoneNumber" placeholder="+7 123 456 78 90" pattern="^\+7\s\d{3}\s\d{3}\s\d{2}\s\d{2}$" required>
+                        </div>
+                        <div class="col-8">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                                <label class="form-check-label" for="termsCheck">
+                                    Примите условия и соглашения
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-primary" type="submit">Зарегистрироваться</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="py-3 bg-primary">
+        <div class="container text-center">
+          <p class="text-white p-3">GET PET BACK © Copyright, 2022</p>
+          <p class="text-white p-3">Все права защищены</p>
+        </div>
+    </footer>
+
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('petForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const form = event.target;
+
+            if (!form.checkValidity()) {
+                form.classList.add('was-validated');
+                return;
+            }
+
+            alert('Объявление успешно добавлено!');
+            window.location.href = 'search.html';
+        });
+
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const form = event.target;
+
+            if (!form.checkValidity()) {
+                form.classList.add('was-validated');
+                return;
+            }
+
+            alert('Регистрация успешна!');
+            window.location.href = 'profile.html';
+        });
+    </script>
+</body>
+</html>
